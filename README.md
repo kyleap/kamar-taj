@@ -88,15 +88,17 @@ hugo new content/posts/<slug>/index.md
 - `source_publisher: Anthropic` 時，前綴是 `anthropic-`，而且 tags 裡必須有 `anthropic`。
 - 其他已登錄的來源看 `data/post_contract.yaml` 的 `publishers`。還沒登錄的來源會用小寫、空白轉連字號的前綴（`Some Lab` → `some-lab-`），並要求同名標籤；推不出合法前綴時建置會失敗，這時把來源加進那個 yaml。
 - 頁面頂端會出現：「本文為摘要與重點翻譯，原文：〈連結〉」。
-- 文章**最後**必須是見解區塊，標題只能是「我的見解」或「我的見讀」：
+- 文章**最後**必須是 `insight` shortcode。標題任意，沒寫標題時預設是「我的見解」。有原文的文章建議用「💡 三個學習」：
 
 ````markdown
-{{< insight "我的見解" >}}
+{{< insight "💡 三個學習" >}}
 
 這裡寫核准人自己的判斷，不要把摘要再貼一次。
 
 {{< /insight >}}
 ````
+
+沒給標題（`{{< insight >}}`）時，標題就是「我的見解」。樣式與標題文字無關，emoji 可以放在標題裡。
 
 沒有 `source_url` 的原創文章不要留這個區塊，三個 source 欄位也留空或整段刪掉。
 

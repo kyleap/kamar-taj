@@ -108,7 +108,7 @@
 {{- end -}}
 {{- $tail := substr (strings.TrimSpace .RawContent) -500 -}}
 {{- if not (or (in $tail "{{< /insight >}}") (in $tail "{{% /insight %}}")) -}}
-{{- errorf "%s：有原文的文章必須以 insight shortcode 收尾（我的見解或我的見讀）" $path -}}
+{{- errorf "%s：有原文的文章必須以 insight shortcode 收尾（標題不限，有原文時建議用「💡 三個學習」）" $path -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

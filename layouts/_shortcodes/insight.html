@@ -1,9 +1,7 @@
 {{- $title := "我的見解" -}}
-{{- with .Get "title" }}{{ $title = . }}{{ end -}}
-{{- with .Get 0 }}{{ $title = . }}{{ end -}}
-{{- if not (in (slice "我的見解" "我的見讀") $title) -}}
-{{- errorf "%s：insight 標題必須是「我的見解」或「我的見讀」，目前是 %q" .Page.File.Path $title -}}
-{{- end -}}
+{{- with .Get "title" }}{{ $title = strings.TrimSpace . }}{{ end -}}
+{{- with .Get 0 }}{{ $title = strings.TrimSpace . }}{{ end -}}
+{{- if not $title }}{{ $title = "我的見解" }}{{ end -}}
 {{- $body := strings.TrimSpace .Inner -}}
 {{- if not $body -}}
 {{- errorf "%s：insight 區塊是空的" .Page.File.Path -}}

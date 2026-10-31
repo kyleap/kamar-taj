@@ -7,9 +7,12 @@ slug: "{{ path.Base (strings.TrimSuffix "/" .File.Dir) }}"
 draft: false
 summary: ""
 # 恰好一個，且必須出現在 data/post_contract.yaml 的 categories。
+# Anthropic 來源請改成 Anthropic，主題（例如 測試與品質）改放到 tags。
 categories:
   - 心得隨筆
-# 3 到 5 個。含英文者一律小寫、不要空白。Anthropic 來源必須包含 anthropic。
+# 3 到 5 個。含英文者一律小寫、不要空白。
+# 主題可以是另一個分類名稱，原樣使用（例如 測試與品質、AI 與 LLM）。
+# Anthropic 來源必須包含小寫 anthropic。
 tags:
   - sample
 source_title: ""

@@ -45,10 +45,11 @@
 {{- else if .Params.categories -}}
 {{- $catList = slice .Params.categories -}}
 {{- end -}}
+{{- $cat := "" -}}
 {{- if ne (len $catList) 1 -}}
 {{- errorf "%s：categories 必須恰好一個，目前是 %d 個" $path (len $catList) -}}
 {{- else -}}
-{{- $cat := printf "%s" (index $catList 0) -}}
+{{- $cat = printf "%s" (index $catList 0) -}}
 {{- if not (in hugo.Data.post_contract.categories $cat) -}}
 {{- errorf "%s：分類 %q 不在固定詞彙裡（見 data/post_contract.yaml）" $path $cat -}}
 {{- end -}}
@@ -65,8 +66,9 @@
 {{- end -}}
 {{- range $tags -}}
 {{- $tag := printf "%s" . -}}
-{{- if or (not (strings.TrimSpace $tag)) (findRE `\s` $tag) (findRE `[A-Z]` $tag) -}}
-{{- errorf "%s：標籤 %q 必須是沒有空白的小寫文字（中文可直接用）" $path $tag -}}
+{{- $isTheme := in hugo.Data.post_contract.categories $tag -}}
+{{- if and (not $isTheme) (or (not (strings.TrimSpace $tag)) (findRE `\s` $tag) (findRE `[A-Z]` $tag)) -}}
+{{- errorf "%s：標籤 %q 必須是沒有空白的小寫文字（中文可直接用）。主題若是分類名稱，請原樣使用，例如「測試與品質」" $path $tag -}}
 {{- end -}}
 {{- end -}}
 
@@ -86,10 +88,12 @@
 {{- end -}}
 {{- $prefix := "" -}}
 {{- $requiredTag := "" -}}
+{{- $requiredCategory := "" -}}
 {{- range hugo.Data.post_contract.publishers -}}
 {{- if eq .name $sourcePublisher -}}
 {{- $prefix = .slug_prefix -}}
 {{- $requiredTag = .required_tag -}}
+{{- $requiredCategory = .category | default "" -}}
 {{- end -}}
 {{- end -}}
 {{- if not $prefix -}}
@@ -105,6 +109,9 @@
 {{- end -}}
 {{- if not (in $tags $requiredTag) -}}
 {{- errorf "%s：來源 %s 的文章必須包含標籤 %q" $path $sourcePublisher $requiredTag -}}
+{{- end -}}
+{{- if and $requiredCategory (ne $cat $requiredCategory) -}}
+{{- errorf "%s：來源 %s 的文章分類必須是 %q，主題請放到 tags" $path $sourcePublisher $requiredCategory -}}
 {{- end -}}
 {{- $tail := substr (strings.TrimSpace .RawContent) -500 -}}
 {{- if not (or (in $tail "{{< /insight >}}") (in $tail "{{% /insight %}}")) -}}

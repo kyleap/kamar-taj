@@ -5,12 +5,12 @@ slug: anthropic-building-effective-agents
 draft: false
 summary: "範例摘要：能用固定步驟解決的事，不必先做成一個會自己規劃的代理人。"
 categories:
-  - AI 與 LLM
+  - Anthropic
 tags:
   - sample
   - anthropic
   - agents
-  - llm
+  - AI 與 LLM
 source_title: "Building effective agents"
 source_url: "https://www.anthropic.com/engineering/building-effective-agents"
 source_publisher: "Anthropic"

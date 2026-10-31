@@ -2,6 +2,7 @@
 # README 的說明要與此檔一致。
 
 categories:
+  - Anthropic
   - AI 與 LLM
   - 軟體工程
   - 測試與品質
@@ -9,8 +10,10 @@ categories:
   - 心得隨筆
 
 # 有 source_url 的文章：slug 必須以 slug_prefix 開頭，且 tags 必須包含 required_tag。
+# 有 category 的來源，文章的分類必須就是那個值；主題改放到 tags。
 # 顯示名稱（source_publisher）要完全一致，例如 Anthropic，不是 anthropic。
 publishers:
   - name: Anthropic
     slug_prefix: anthropic-
     required_tag: anthropic
+    category: Anthropic

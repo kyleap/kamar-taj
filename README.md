@@ -64,8 +64,8 @@ hugo new content/posts/<slug>/index.md
 | `title` | 必填 |
 | `date` | 必填，公開用的日期 |
 | `slug` | 必填，而且必須等於目錄名。只能小寫英文、數字、連字號 |
-| `categories` | **恰好一個**，只能是下面的固定詞彙 |
-| `tags` | **3 到 5 個**。自由填。含英文字母者一律小寫，不要空白。中文可直接用 |
+| `categories` | **恰好一個**，只能是下面的固定詞彙。Anthropic 來源一律用 `Anthropic` |
+| `tags` | **3 到 5 個**。自由填。含英文字母者一律小寫，不要空白。中文可直接用。主題若是另一個分類名稱，可以原樣當標籤（例如 `測試與品質`、`AI 與 LLM`） |
 | `summary` | 必填。列表與文章頁副標用這段 |
 | `source_title` | 有原文才填，而且三個 source 欄位要一起填 |
 | `source_url` | 有原文才填，`http` 或 `https` |
@@ -76,6 +76,7 @@ hugo new content/posts/<slug>/index.md
 
 固定分類（一個都不能多、不能自創）：
 
+- Anthropic
 - AI 與 LLM
 - 軟體工程
 - 測試與品質
@@ -85,7 +86,7 @@ hugo new content/posts/<slug>/index.md
 有原文的文章：
 
 - slug 使用來源前綴加原始 slug，例如 `anthropic-<original-slug>`。
-- `source_publisher: Anthropic` 時，前綴是 `anthropic-`，而且 tags 裡必須有 `anthropic`。
+- `source_publisher: Anthropic` 時，前綴是 `anthropic-`，tags 裡必須有小寫 `anthropic`，而且 **categories 只能是 `Anthropic`**。原本要放的主題（例如 `測試與品質`、`AI 與 LLM`）改放到 tags，分類名稱可以原樣當標籤。
 - 其他已登錄的來源看 `data/post_contract.yaml` 的 `publishers`。還沒登錄的來源會用小寫、空白轉連字號的前綴（`Some Lab` → `some-lab-`），並要求同名標籤；推不出合法前綴時建置會失敗，這時把來源加進那個 yaml。
 - 頁面頂端會出現：「本文為摘要與重點翻譯，原文：〈連結〉」。
 - 文章**最後**必須是 `insight` shortcode。標題任意，沒寫標題時預設是「我的見解」。有原文的文章建議用「💡 三個學習」：

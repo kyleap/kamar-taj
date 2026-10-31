@@ -1,0 +1,79 @@
+# 把 Hugo 站部署到 GitHub Pages。
+# 推上預設分支（含新增文章）會建置並發布。
+# workflow_dispatch：Actions 頁面手動重建。
+# repository_dispatch：外部系統用 event_type rebuild 或 publish 觸發重建。
+# 這個 workflow 不讀取任何自訂 secret。部署用的是 GitHub 自動提供的 GITHUB_TOKEN。
+
+name: Deploy Hugo site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [rebuild, publish]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: "0.169.0"
+      # 專案頁在自訂網域的子路徑。不要改用 configure-pages 的 base_url：
+      # 那個值可能是 https://<帳號>.github.io/kamar-taj/，會把帳號名寫進頁面。
+      HUGO_BASEURL: "https://kyle.study4.tw/kamar-taj/"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install Hugo extended
+        run: |
+          set -euo pipefail
+          tgz="${{ runner.temp }}/hugo.tar.gz"
+          wget -O "$tgz" "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          echo "c41672a0725d307758a132bc94a962e59760eb33f9ba08c991b81f9881d6fa7d  $tgz" | sha256sum -c -
+          sudo tar -C /usr/local/bin -xzf "$tgz" hugo
+          hugo version
+
+      - name: Build
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+        run: hugo --gc --minify --baseURL "${HUGO_BASEURL}"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

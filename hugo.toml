@@ -1,0 +1,99 @@
+# 卡瑪泰姬的技術修煉所
+# 專案頁路徑是 /kamar-taj/。改網域或改倉庫名稱時，只改這一行，並同步
+# .github/workflows/pages.yml 的 HUGO_BASEURL。
+baseURL = "https://kyle.study4.tw/kamar-taj/"
+locale = "zh-TW"
+defaultContentLanguage = "zh-tw"
+title = "卡瑪泰姬的技術修煉所"
+theme = "PaperMod"
+hasCJKLanguage = true
+# 標籤維持 front matter 裡的小寫，不要被 AP title case 改成 Sample / Llm。
+capitalizeListTitles = false
+titleCaseStyle = "none"
+enableRobotsTXT = true
+# 公開日期以每篇文章 front matter 的 date 為準，不用 Git 提交時間。
+enableGitInfo = false
+
+# 主題是 git submodule：themes/PaperMod
+# 釘在 commit 118119693d8b5ac211b939775678310973bcb232。
+# 不要用發行版 v8.0：那個版本早於 Hugo 0.146 的模板系統，
+# 目前的 PaperMod 需要 Hugo >= 0.158.0（本站 workflow 釘 0.169.0 extended）。
+
+[pagination]
+  pagerSize = 10
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    guessSyntax = true
+    codeFences = true
+  [markup.goldmark.renderer]
+    unsafe = false
+
+[params]
+  description = "把測試、工程判斷與手邊的工具，練成靠得住的基本功。"
+  author = "Kyle"
+  defaultTheme = "dark"
+  DateFormat = "2006年1月2日"
+  kicker = "Kamar-Taj"
+  recentHeading = "近期文章"
+  ShowReadingTime = true
+  ShowWordCount = true
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  mainSections = ["posts"]
+  keywords = ["測試", "QA", "軟體工程", "繁體中文"]
+
+  [params.homeInfoParams]
+    Title = "卡瑪泰姬的技術修煉所"
+    Content = "把測試、工程判斷與手邊的工具，練成靠得住的基本功。"
+
+  [params.label]
+    text = "卡瑪泰姬"
+    icon = "images/mark.svg"
+    iconHeight = 28
+
+  [params.assets]
+    favicon = "favicon.svg"
+    favicon16x16 = "favicon.svg"
+    favicon32x32 = "favicon.svg"
+    apple_touch_icon = "favicon.svg"
+    safari_pinned_tab = "favicon.svg"
+    theme_color = "#07111f"
+    msapplication_TileColor = "#07111f"
+    disableFingerprinting = false
+
+[[menu.main]]
+  name = "文章"
+  url = "posts/"
+  weight = 10
+
+[[menu.main]]
+  name = "分類"
+  url = "categories/"
+  weight = 20
+
+[[menu.main]]
+  name = "標籤"
+  url = "tags/"
+  weight = 30
+
+[[menu.main]]
+  name = "關於"
+  url = "about/"
+  weight = 40
+
+[[menu.main]]
+  identifier = "search"
+  name = "搜尋"
+  url = "search/"
+  weight = 50

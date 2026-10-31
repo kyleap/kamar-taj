@@ -1,0 +1,116 @@
+{{- /*
+  發文契約。只檢查 content/posts 底下、且會被建置出來的文章（draft: false）。
+  詞彙表在 data/post_contract.yaml。錯誤用繁體中文，讓 CI 日誌可以直接看。
+*/ -}}
+{{- if and (eq .Section "posts") (not .Draft) -}}
+{{- $path := .File.Path -}}
+{{- $dir := strings.TrimSuffix "/" .File.Dir -}}
+{{- if or (ne .File.BaseFileName "index") (not (hasPrefix $dir "posts/")) (strings.Contains (strings.TrimPrefix "posts/" $dir) "/") -}}
+{{- errorf "%s：文章必須是 page bundle，路徑 content/posts/<slug>/index.md" $path -}}
+{{- end -}}
+{{- $folder := path.Base $dir -}}
+{{- $slug := strings.TrimSpace (printf "%s" (.Params.slug | default "")) -}}
+{{- if or (not $slug) (ne $slug $folder) -}}
+{{- errorf "%s：front matter 的 slug（%q）必須等於目錄名 %q" $path $slug $folder -}}
+{{- end -}}
+{{- if not (findRE `^[a-z0-9]+(-[a-z0-9]+)*$` $slug) -}}
+{{- errorf "%s：slug 只能用小寫英文、數字與連字號" $path -}}
+{{- end -}}
+{{- if or (not (isset .Params "title")) (not (strings.TrimSpace .Title)) -}}
+{{- errorf "%s：必須在 front matter 提供 title" $path -}}
+{{- end -}}
+{{- if or (not (isset .Params "date")) .Date.IsZero -}}
+{{- errorf "%s：必須在 front matter 提供 date" $path -}}
+{{- end -}}
+{{- if not (isset .Params "draft") -}}
+{{- errorf "%s：公開文章的 draft 必須明確設為 false" $path -}}
+{{- end -}}
+{{- $summary := strings.TrimSpace (printf "%s" (.Params.summary | default "")) -}}
+{{- if not $summary -}}
+{{- errorf "%s：必須提供 summary" $path -}}
+{{- end -}}
+{{- $approvedBy := strings.TrimSpace (printf "%s" (.Params.approved_by | default "")) -}}
+{{- if or (not $approvedBy) (in $approvedBy "\n") -}}
+{{- errorf "%s：approved_by 必須是核准人的顯示代號" $path -}}
+{{- end -}}
+{{- if not .Params.approved_at -}}
+{{- errorf "%s：approved_at 必須是可解析的日期時間" $path -}}
+{{- else if (time.AsTime .Params.approved_at).IsZero -}}
+{{- errorf "%s：approved_at 必須是可解析的日期時間" $path -}}
+{{- end -}}
+
+{{- $catList := slice -}}
+{{- if reflect.IsSlice .Params.categories -}}
+{{- $catList = .Params.categories -}}
+{{- else if .Params.categories -}}
+{{- $catList = slice .Params.categories -}}
+{{- end -}}
+{{- $cat := "" -}}
+{{- if ne (len $catList) 1 -}}
+{{- errorf "%s：categories 必須恰好一個，目前是 %d 個" $path (len $catList) -}}
+{{- else -}}
+{{- $cat = printf "%s" (index $catList 0) -}}
+{{- if not (in hugo.Data.post_contract.categories $cat) -}}
+{{- errorf "%s：分類 %q 不在固定詞彙裡（見 data/post_contract.yaml）" $path $cat -}}
+{{- end -}}
+{{- end -}}
+
+{{- $tags := slice -}}
+{{- if reflect.IsSlice .Params.tags -}}
+{{- $tags = .Params.tags -}}
+{{- else if .Params.tags -}}
+{{- $tags = slice .Params.tags -}}
+{{- end -}}
+{{- if or (lt (len $tags) 3) (gt (len $tags) 5) -}}
+{{- errorf "%s：tags 必須是 3 到 5 個，目前是 %d 個" $path (len $tags) -}}
+{{- end -}}
+{{- range $tags -}}
+{{- $tag := printf "%s" . -}}
+{{- $isTheme := in hugo.Data.post_contract.categories $tag -}}
+{{- if and (not $isTheme) (or (not (strings.TrimSpace $tag)) (findRE `\s` $tag) (findRE `[A-Z]` $tag)) -}}
+{{- errorf "%s：標籤 %q 必須是沒有空白的小寫文字（中文可直接用）。主題若是分類名稱，請原樣使用，例如「測試與品質」" $path $tag -}}
+{{- end -}}
+{{- end -}}
+
+{{- $sourceTitle := strings.TrimSpace (printf "%s" (.Params.source_title | default "")) -}}
+{{- $sourceURL := strings.TrimSpace (printf "%s" (.Params.source_url | default "")) -}}
+{{- $sourcePublisher := strings.TrimSpace (printf "%s" (.Params.source_publisher | default "")) -}}
+{{- $filled := 0 -}}
+{{- if $sourceTitle -}}{{- $filled = add $filled 1 -}}{{- end -}}
+{{- if $sourceURL -}}{{- $filled = add $filled 1 -}}{{- end -}}
+{{- if $sourcePublisher -}}{{- $filled = add $filled 1 -}}{{- end -}}
+{{- if and (gt $filled 0) (lt $filled 3) -}}
+{{- errorf "%s：source_title、source_url、source_publisher 要嘛一起填，要嘛都留空" $path -}}
+{{- end -}}
+{{- if $sourceURL -}}
+{{- if not (or (hasPrefix $sourceURL "https://") (hasPrefix $sourceURL "http://")) -}}
+{{- errorf "%s：source_url 必須是 http 或 https 網址" $path -}}
+{{- end -}}
+{{- $prefix := "" -}}
+{{- $requiredTag := "" -}}
+{{- range hugo.Data.post_contract.publishers -}}
+{{- if eq .name $sourcePublisher -}}
+{{- $prefix = .slug_prefix -}}
+{{- $requiredTag = .required_tag -}}
+{{- end -}}
+{{- end -}}
+{{- if not $prefix -}}
+{{- $token := lower (replace $sourcePublisher " " "-") -}}
+{{- $prefix = printf "%s-" $token -}}
+{{- $requiredTag = $token -}}
+{{- end -}}
+{{- if not (findRE `^[a-z0-9]+(-[a-z0-9]+)*-$` $prefix) -}}
+{{- errorf "%s：無法從來源 %q 推出 slug 前綴，請把這個來源加進 data/post_contract.yaml" $path $sourcePublisher -}}
+{{- end -}}
+{{- if or (not (hasPrefix $slug $prefix)) (le (len $slug) (len $prefix)) -}}
+{{- errorf "%s：有原文的文章 slug 必須是 %s<original-slug>" $path $prefix -}}
+{{- end -}}
+{{- if not (in $tags $requiredTag) -}}
+{{- errorf "%s：來源 %s 的文章必須包含標籤 %q" $path $sourcePublisher $requiredTag -}}
+{{- end -}}
+{{- $tail := substr (strings.TrimSpace .RawContent) -500 -}}
+{{- if not (or (in $tail "{{< /insight >}}") (in $tail "{{% /insight %}}")) -}}
+{{- errorf "%s：有原文的文章必須以 insight shortcode 收尾（標題不限；建議「💡 三個學習」，且內容為三個條列）" $path -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}

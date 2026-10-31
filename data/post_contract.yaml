@@ -1,0 +1,18 @@
+# 發文契約。建置時 layouts/_partials/post_contract.html 會依這份清單拒絕不合格的文章。
+# README 的說明要與此檔一致。
+
+# 分類只按領域，不按來源。來源用 source_publisher 與標籤（例如 anthropic）。
+categories:
+  - AI 與 LLM
+  - 軟體工程
+  - 測試與品質
+  - 產品與管理
+  - 心得隨筆
+
+# 有 source_url 的文章：slug 必須以 slug_prefix 開頭，且 tags 必須包含 required_tag。
+# 顯示名稱（source_publisher）要完全一致，例如 Anthropic，不是 anthropic。
+# 標題為「💡 三個學習」的 insight 內容必須是恰好三個條列。
+publishers:
+  - name: Anthropic
+    slug_prefix: anthropic-
+    required_tag: anthropic

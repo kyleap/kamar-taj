@@ -1,0 +1,41 @@
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info kt-hero">
+    <div class="kt-mandala" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <g class="kt-spin kt-spin-a" fill="none" stroke="currentColor">
+                <circle cx="100" cy="100" r="90" stroke-width="0.6" />
+                <circle cx="100" cy="100" r="74" stroke-width="0.45" opacity="0.8" />
+                <g stroke-width="1.15">
+                    <line x1="100.00" y1="24.00" x2="100.00" y2="10.00" />
+                    <line x1="138.00" y1="34.18" x2="145.00" y2="22.06" />
+                    <line x1="165.82" y1="62.00" x2="177.94" y2="55.00" />
+                    <line x1="176.00" y1="100.00" x2="190.00" y2="100.00" />
+                    <line x1="165.82" y1="138.00" x2="177.94" y2="145.00" />
+                    <line x1="138.00" y1="165.82" x2="145.00" y2="177.94" />
+                    <line x1="100.00" y1="176.00" x2="100.00" y2="190.00" />
+                    <line x1="62.00" y1="165.82" x2="55.00" y2="177.94" />
+                    <line x1="34.18" y1="138.00" x2="22.06" y2="145.00" />
+                    <line x1="24.00" y1="100.00" x2="10.00" y2="100.00" />
+                    <line x1="34.18" y1="62.00" x2="22.06" y2="55.00" />
+                    <line x1="62.00" y1="34.18" x2="55.00" y2="22.06" />
+                </g>
+            </g>
+            <g class="kt-spin kt-spin-b" fill="none" stroke="currentColor">
+                <circle cx="100" cy="100" r="58" stroke-width="1.35" stroke-dasharray="168 48" />
+                <circle cx="100" cy="100" r="42" stroke-width="0.55" />
+                <circle cx="100" cy="100" r="18" stroke-width="0.7" />
+            </g>
+            <circle cx="100" cy="100" r="3" fill="currentColor" stroke="none" />
+        </svg>
+    </div>
+    <header class="entry-header">
+        <p class="kt-kicker">{{ site.Params.kicker | default "Kamar-Taj" }}</p>
+        <h1>{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content md-content">
+        {{ $opts := dict "display" "block" }}
+        {{ .Content | $.Page.RenderString $opts }}
+    </div>
+</article>
+<h2 class="kt-recent">{{ site.Params.recentHeading | default "近期文章" }}</h2>
+{{- end }}

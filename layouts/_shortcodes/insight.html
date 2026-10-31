@@ -1,0 +1,16 @@
+{{- $title := "我的見解" -}}
+{{- with .Get "title" }}{{ $title = . }}{{ end -}}
+{{- with .Get 0 }}{{ $title = . }}{{ end -}}
+{{- if not (in (slice "我的見解" "我的見讀") $title) -}}
+{{- errorf "%s：insight 標題必須是「我的見解」或「我的見讀」，目前是 %q" .Page.File.Path $title -}}
+{{- end -}}
+{{- $body := strings.TrimSpace .Inner -}}
+{{- if not $body -}}
+{{- errorf "%s：insight 區塊是空的" .Page.File.Path -}}
+{{- end -}}
+<section class="kt-insight" aria-label="{{ $title }}">
+    <h2 class="kt-insight-title">{{ $title }}</h2>
+    <div class="kt-insight-body">
+        {{ $body | .Page.RenderString (dict "display" "block") }}
+    </div>
+</section>

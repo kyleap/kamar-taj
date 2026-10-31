@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 168" role="img" aria-labelledby="loopTitle loopDesc">
+  <title id="loopTitle">回歸測試的回饋迴圈</title>
+  <desc id="loopDesc">寫下使用者看得到的斷言，跑測試，失敗就看 trace。</desc>
+  <rect width="720" height="168" rx="16" fill="#fffdf8"/>
+  <rect x="1" y="1" width="718" height="166" rx="16" fill="none" stroke="#e4d2a4"/>
+  <g fill="none" stroke="#8d5a16" stroke-width="1.4">
+    <rect x="36" y="48" width="150" height="72" rx="12"/>
+    <rect x="286" y="48" width="150" height="72" rx="12"/>
+    <rect x="536" y="48" width="150" height="72" rx="12"/>
+  </g>
+  <path d="M186 84 H286 M436 84 H536" stroke="#b85a22" stroke-width="1.6" fill="none"/>
+  <path d="M280 84 l-8 -5 v10 z M530 84 l-8 -5 v10 z" fill="#b85a22"/>
+  <path d="M611 120 C611 146, 111 146, 111 120" stroke="#8d5a16" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/>
+  <path d="M118 128 l-10 -6 10 -6 v4 h10 v4 h-10 z" fill="#8d5a16"/>
+  <g fill="#162033" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="18" text-anchor="middle">
+    <text x="111" y="80">寫下看得到</text>
+    <text x="111" y="104">的斷言</text>
+    <text x="361" y="80">跑測試</text>
+    <text x="361" y="104">留下 trace</text>
+    <text x="611" y="80">失敗先看</text>
+    <text x="611" y="104">trace</text>
+  </g>
+</svg>

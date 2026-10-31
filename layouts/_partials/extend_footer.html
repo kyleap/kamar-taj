@@ -1,0 +1,27 @@
+<script>
+    (function () {
+        var toggle = document.getElementById("theme-toggle");
+        if (toggle) {
+            toggle.setAttribute("aria-label", "切換深色或淺色");
+            toggle.setAttribute("title", "切換深色或淺色（Alt + T）");
+        }
+        var search = document.getElementById("searchInput");
+        if (search) {
+            search.setAttribute("aria-label", "搜尋文章");
+        }
+        var top = document.getElementById("top-link");
+        if (top) {
+            top.setAttribute("aria-label", "回到頁首");
+            top.setAttribute("title", "回到頁首（Alt + G）");
+        }
+        var dark = "#07111f";
+        var light = "#f3efe6";
+        function paintChrome() {
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (!meta) return;
+            meta.setAttribute("content", document.documentElement.dataset.theme === "light" ? light : dark);
+        }
+        paintChrome();
+        if (toggle) toggle.addEventListener("click", function () { setTimeout(paintChrome, 0); });
+    })();
+</script>

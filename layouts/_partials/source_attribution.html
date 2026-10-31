@@ -1,0 +1,6 @@
+{{- $url := strings.TrimSpace (printf "%s" (.Params.source_url | default "")) -}}
+{{- if $url -}}
+<aside class="kt-source" role="note">
+    <p>本文為摘要與重點翻譯，原文：<a href="{{ $url }}" rel="noopener noreferrer">{{ .Params.source_title }}</a>{{- with strings.TrimSpace (printf "%s" (.Params.source_publisher | default "")) }}（{{ . }}）{{ end -}}</p>
+</aside>
+{{- end -}}

@@ -88,12 +88,10 @@
 {{- end -}}
 {{- $prefix := "" -}}
 {{- $requiredTag := "" -}}
-{{- $requiredCategory := "" -}}
 {{- range hugo.Data.post_contract.publishers -}}
 {{- if eq .name $sourcePublisher -}}
 {{- $prefix = .slug_prefix -}}
 {{- $requiredTag = .required_tag -}}
-{{- $requiredCategory = .category | default "" -}}
 {{- end -}}
 {{- end -}}
 {{- if not $prefix -}}
@@ -110,12 +108,9 @@
 {{- if not (in $tags $requiredTag) -}}
 {{- errorf "%s：來源 %s 的文章必須包含標籤 %q" $path $sourcePublisher $requiredTag -}}
 {{- end -}}
-{{- if and $requiredCategory (ne $cat $requiredCategory) -}}
-{{- errorf "%s：來源 %s 的文章分類必須是 %q，主題請放到 tags" $path $sourcePublisher $requiredCategory -}}
-{{- end -}}
 {{- $tail := substr (strings.TrimSpace .RawContent) -500 -}}
 {{- if not (or (in $tail "{{< /insight >}}") (in $tail "{{% /insight %}}")) -}}
-{{- errorf "%s：有原文的文章必須以 insight shortcode 收尾（標題不限，有原文時建議用「💡 三個學習」）" $path -}}
+{{- errorf "%s：有原文的文章必須以 insight shortcode 收尾（標題不限；建議「💡 三個學習」，且內容為三個條列）" $path -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

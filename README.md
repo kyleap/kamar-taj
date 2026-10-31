@@ -64,8 +64,8 @@ hugo new content/posts/<slug>/index.md
 | `title` | 必填 |
 | `date` | 必填，公開用的日期 |
 | `slug` | 必填，而且必須等於目錄名。只能小寫英文、數字、連字號 |
-| `categories` | **恰好一個**，只能是下面的固定詞彙。Anthropic 來源一律用 `Anthropic` |
-| `tags` | **3 到 5 個**。自由填。含英文字母者一律小寫，不要空白。中文可直接用。主題若是另一個分類名稱，可以原樣當標籤（例如 `測試與品質`、`AI 與 LLM`） |
+| `categories` | **恰好一個**，只能是下面的領域分類。來源不占分類 |
+| `tags` | **3 到 5 個**。自由填。含英文字母者一律小寫，不要空白。中文可直接用。分類名稱可以原樣當標籤 |
 | `summary` | 必填。列表與文章頁副標用這段 |
 | `source_title` | 有原文才填，而且三個 source 欄位要一起填 |
 | `source_url` | 有原文才填，`http` 或 `https` |
@@ -74,9 +74,8 @@ hugo new content/posts/<slug>/index.md
 | `approved_by` | 必填。核准人的**顯示代號**（例如 `kyle`）。不是密鑰，也不必等於 GitHub 帳號 |
 | `draft` | 會公開的文章必須是 `false` |
 
-固定分類（一個都不能多、不能自創）：
+固定分類（一個都不能多、不能自創；只按領域，不按來源）：
 
-- Anthropic
 - AI 與 LLM
 - 軟體工程
 - 測試與品質
@@ -86,20 +85,22 @@ hugo new content/posts/<slug>/index.md
 有原文的文章：
 
 - slug 使用來源前綴加原始 slug，例如 `anthropic-<original-slug>`。
-- `source_publisher: Anthropic` 時，前綴是 `anthropic-`，tags 裡必須有小寫 `anthropic`，而且 **categories 只能是 `Anthropic`**。原本要放的主題（例如 `測試與品質`、`AI 與 LLM`）改放到 tags，分類名稱可以原樣當標籤。
+- `source_publisher: Anthropic` 時，前綴是 `anthropic-`，tags 裡必須有小寫 `anthropic`。分類仍選上面的領域（例如 `AI 與 LLM`），不要為來源另開分類。出處靠 front matter 的 `source_publisher` 與這個標籤。
 - 其他已登錄的來源看 `data/post_contract.yaml` 的 `publishers`。還沒登錄的來源會用小寫、空白轉連字號的前綴（`Some Lab` → `some-lab-`），並要求同名標籤；推不出合法前綴時建置會失敗，這時把來源加進那個 yaml。
 - 頁面頂端會出現：「本文為摘要與重點翻譯，原文：〈連結〉」。
-- 文章**最後**必須是 `insight` shortcode。標題任意，沒寫標題時預設是「我的見解」。有原文的文章建議用「💡 三個學習」：
+- 文章**最後**必須是 `insight` shortcode。標題任意，沒寫標題時預設是「我的見解」。有原文的文章建議用「💡 三個學習」，內容是**恰好三個** Markdown 條列（一行一點）。條列少於或多於三個時，建置會失敗：
 
 ````markdown
 {{< insight "💡 三個學習" >}}
 
-這裡寫核准人自己的判斷，不要把摘要再貼一次。
+- 第一個學習
+- 第二個學習
+- 第三個學習
 
 {{< /insight >}}
 ````
 
-沒給標題（`{{< insight >}}`）時，標題就是「我的見解」。樣式與標題文字無關，emoji 可以放在標題裡。
+沒給標題（`{{< insight >}}`）時，標題就是「我的見解」。樣式與標題文字無關，emoji 可以放在標題裡。條列在深色、淺色與手機寬度都會顯示金色項目符號。
 
 沒有 `source_url` 的原創文章不要留這個區塊，三個 source 欄位也留空或整段刪掉。
 

@@ -5,12 +5,12 @@ slug: anthropic-building-effective-agents
 draft: false
 summary: "範例摘要：能用固定步驟解決的事，不必先做成一個會自己規劃的代理人。"
 categories:
-  - Anthropic
+  - AI 與 LLM
 tags:
   - sample
   - anthropic
   - agents
-  - AI 與 LLM
+  - llm
 source_title: "Building effective agents"
 source_url: "https://www.anthropic.com/engineering/building-effective-agents"
 source_publisher: "Anthropic"
@@ -32,7 +32,8 @@ approved_by: kyle
 
 {{< insight "💡 三個學習" >}}
 
-審這類文章時，我會先問團隊現在的痛是「步驟不穩」，還是「目標本身不清楚」。前者用固定流程加上測得了的斷言就夠；後者才值得付代理人那種走偏的風險。
+- 先分清痛點是步驟不穩，還是目標不清楚。前者用固定流程與測得了的斷言就夠。
+- 能寫成檢查清單的事，不必先做成會自己規劃的代理人。
+- 代理人留下的不確定性要有人收。這三點是範例，正式文章請改成核准人自己的判斷。
 
-這段是範例見解。正式文章請改成核准人自己的判斷，並把這個區塊留在全文最後。
 {{< /insight >}}

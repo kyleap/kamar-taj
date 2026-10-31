@@ -6,6 +6,12 @@
 {{- if not $body -}}
 {{- errorf "%s：insight 區塊是空的" .Page.File.Path -}}
 {{- end -}}
+{{- if eq $title "💡 三個學習" -}}
+{{- $items := findRE `(?m)^[ \t]*[-*+] ` $body -}}
+{{- if ne (len $items) 3 -}}
+{{- errorf "%s：「💡 三個學習」的內容必須是恰好三個 Markdown 條列（一行一點）" .Page.File.Path -}}
+{{- end -}}
+{{- end -}}
 <section class="kt-insight" aria-label="{{ $title }}">
     <h2 class="kt-insight-title">{{ $title }}</h2>
     <div class="kt-insight-body">

@@ -283,6 +283,39 @@ a:hover {
     margin-bottom: 0;
 }
 
+.kt-insight-body ul,
+.kt-insight-body ol {
+    margin: 0.15rem 0 0;
+    padding-inline-start: 1.35rem;
+    list-style: disc;
+}
+
+.kt-insight-body ol {
+    list-style: decimal;
+}
+
+.kt-insight-body li {
+    display: list-item;
+    margin-top: 0.55rem;
+    padding-inline-start: 0.2rem;
+    line-height: 1.75;
+}
+
+.kt-insight-body li::marker {
+    color: var(--kt-accent);
+}
+
+@media (max-width: 680px) {
+    .kt-insight-body ul,
+    .kt-insight-body ol {
+        padding-inline-start: 1.2rem;
+    }
+
+    .kt-insight-body li {
+        margin-top: 0.7rem;
+    }
+}
+
 @media (max-width: 680px) {
     .logo a {
         font-size: 1.05rem;
